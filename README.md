@@ -41,3 +41,4 @@ Access the interface at http://localhost:8081.
 - [x] Multi-field Geographic Precision
 - [x] 7-Day Forecast Integration
 - [x] Browser-based GPS Auto-location
+- [x] Scientific Unit Support (Kelvin)
