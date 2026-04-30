@@ -5,15 +5,33 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='weather_details.css') }}">
 </head>
 <body>
-    <div class="weather-card">
-        <div class="city">{{ weather_info.city }}</div>
-        <div style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 15px;">
-            {{ weather_info.region }}, {{ weather_info.country }}
+    <div class="weather-card" style="max-width: 500px;">
+        <div class="city">{{ weather_info.city }}, {{ weather_info.country }}</div>
+        <img src="{{ weather_info.icon_url }}" alt="Current Condition" style="width: 64px;">
+        <div class="temp" style="font-size: 3.5rem; margin: 10px 0;">{{ weather_info.temperature }}{{ weather_info.unit_label }}</div>
+        <div class="desc" style="text-transform: capitalize; margin-bottom: 20px;">{{ weather_info.description }}</div>
+        
+        <hr style="border: 0.5px solid rgba(255,255,255,0.2); margin: 20px 0;">
+        
+        <h4 style="margin-bottom: 15px; opacity: 0.9; letter-spacing: 1px;">7-DAY OUTLOOK</h4>
+        
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px;">
+            {% for day in weather_info.forecast %}
+            <div style="background: rgba(255,255,255,0.1); 
+                        backdrop-filter: blur(5px);
+                        padding: 10px; 
+                        border-radius: 12px; 
+                        width: 75px; 
+                        text-align: center;
+                        border: 1px solid rgba(255,255,255,0.1);">
+                <div style="font-size: 0.7rem; opacity: 0.8; margin-bottom: 5px;">{{ day.date[5:] }}</div>
+                <img src="{{ day.icon }}" style="width: 30px; margin: 5px 0;">
+                <div style="font-size: 1rem; font-weight: bold;">{{ day.avg_temp }}°</div>
+            </div>
+            {% endfor %}
         </div>
-        <img src="{{ weather_info.icon_url }}" alt="Condition" style="width: 80px;">
-        <div class="temp">{{ weather_info.temperature }}{{ weather_info.unit_label }}</div>
-        <div class="desc">{{ weather_info.description }}</div>
-        <a href="/" class="back-btn">← New Search</a>
+        
+        <a href="/" class="back-btn" style="text-decoration: none; color: #00d2ff; font-size: 0.9rem;">← New Search</a>
     </div>
 </body>
 </html>

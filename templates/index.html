@@ -8,12 +8,13 @@
     <div class="content">
         <h1>SkyCast</h1>
         <form action="/weather_details" method="get">
-            <input type="text" id="cityInput" name="city" list="suggestions" placeholder="City" autocomplete="off" required>
+            <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                <input type="text" id="cityInput" name="city" list="suggestions" placeholder="City" autocomplete="off" required>
+                <button type="button" id="locationBtn" style="width: 50px; margin: 0; padding: 0;">📍</button>
+            </div>
             <datalist id="suggestions"></datalist>
-
             <input type="text" id="stateInput" name="state" placeholder="State/Region">
             <input type="text" id="countryInput" name="country" placeholder="Country">
-            
             <select name="unit">
                 <option value="metric">Celsius (°C)</option>
                 <option value="imperial">Fahrenheit (°F)</option>
@@ -28,36 +29,40 @@
         const stateInput = document.getElementById('stateInput');
         const countryInput = document.getElementById('countryInput');
 
-        // Fetch suggestions as you type
         cityInput.addEventListener('input', async (e) => {
             const val = e.target.value;
-            
-            // If the user selects a full string from the dropdown, parse it
             if (val.includes(',')) {
                 const parts = val.split(',');
                 if (parts.length >= 3) {
                     cityInput.value = parts[0].trim();
                     stateInput.value = parts[1].trim();
                     countryInput.value = parts[2].trim();
-                    return; // Stop searching once we've picked one
+                    return;
                 }
             }
-
             if (val.length < 2) return;
+            const res = await fetch(`/search_suggest?q=${val}`);
+            const data = await res.json();
+            suggestions.innerHTML = '';
+            data.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = `${item.name}, ${item.region}, ${item.country}`;
+                suggestions.appendChild(opt);
+            });
+        });
 
-            try {
-                const res = await fetch(`/search_suggest?q=${val}`);
-                const data = await res.json();
-                
-                suggestions.innerHTML = '';
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    // Label shows the user the options, Value fills the boxes
-                    option.value = `${item.name}, ${item.region}, ${item.country}`;
-                    suggestions.appendChild(option);
+        document.getElementById('locationBtn').addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    const q = `${pos.coords.latitude},${pos.coords.longitude}`;
+                    const res = await fetch(`/search_suggest?q=${q}`);
+                    const data = await res.json();
+                    if (data.length > 0) {
+                        cityInput.value = data[0].name;
+                        stateInput.value = data[0].region;
+                        countryInput.value = data[0].country;
+                    }
                 });
-            } catch (err) {
-                console.error("Search fetch failed");
             }
         });
     </script>
