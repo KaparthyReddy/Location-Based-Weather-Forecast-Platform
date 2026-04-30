@@ -36,12 +36,8 @@ Access the interface at http://localhost:8081.
 
 ## 📜 Roadmap
 
-[x] Smart Location Autocomplete
-
-[x] Glassmorphic UI Overhaul
-
-[x] Multi-field Geographic Precision
-
-[ ] 7-Day Forecast Integration
-
-[ ] Browser-based GPS Auto-location
+- [x] Smart Location Autocomplete
+- [x] Glassmorphic UI Overhaul
+- [x] Multi-field Geographic Precision
+- [ ] 7-Day Forecast Integration
+- [ ] Browser-based GPS Auto-location
