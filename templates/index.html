@@ -10,15 +10,19 @@
         <form action="/weather_details" method="get">
             <div style="display: flex; gap: 5px; margin-bottom: 10px;">
                 <input type="text" id="cityInput" name="city" list="suggestions" placeholder="City" autocomplete="off" required>
-                <button type="button" id="locationBtn" style="width: 50px; margin: 0; padding: 0;">📍</button>
+                <button type="button" id="locationBtn" style="width: 50px;">📍</button>
             </div>
             <datalist id="suggestions"></datalist>
+            
             <input type="text" id="stateInput" name="state" placeholder="State/Region">
             <input type="text" id="countryInput" name="country" placeholder="Country">
+            
             <select name="unit">
                 <option value="metric">Celsius (°C)</option>
                 <option value="imperial">Fahrenheit (°F)</option>
+                <option value="kelvin">Kelvin (K)</option>
             </select>
+            
             <button type="submit">Analyze Conditions</button>
         </form>
     </div>
