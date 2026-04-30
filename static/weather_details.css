@@ -1,29 +1,14 @@
 body {
-    font-family: Arial, sans-serif;
-    background-image: url('../static/images/weather_background.jpg');
-    background-size: cover;
-    background-position: center;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1534088568595-a066f710b81f?auto=format&fit=crop&w=1920&q=80');
+    background-size: cover; height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center;
 }
-
-.weather-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    text-align: center;
+.weather-card {
+    background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px);
+    padding: 50px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.15);
+    text-align: center; color: white; width: 350px;
 }
-
-.weather-info {
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 30px;
-    border-radius: 10px;
-    color: white;
-}
-
-img {
-    width: 100px;
-    height: 100px;
-}
+.temp { font-size: 80px; font-weight: 200; margin: 10px 0; }
+.city { font-size: 24px; font-weight: 600; opacity: 0.9; }
+.desc { text-transform: capitalize; font-size: 18px; letter-spacing: 1px; color: #00d2ff; }
+.back-btn { display: inline-block; margin-top: 30px; color: white; text-decoration: none; opacity: 0.6; font-size: 14px; }

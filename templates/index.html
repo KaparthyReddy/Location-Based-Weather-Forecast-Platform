@@ -1,27 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
+    <title>SkyCast Engine</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <h1>Weather App</h1>
-            <form action="/weather_details" method="get">
-                <label for="location">Enter Location:</label>
-                <input type="text" id="location" name="location" required>
-                <label for="unit">Choose Unit:</label>
-                <select name="unit" id="unit">
-                    <option value="metric">Celsius</option>
-                    <option value="imperial">Fahrenheit</option>
-                </select>
-                <button type="submit">Get Weather</button>
-            </form>
-        </div>
+    <div class="content">
+        <h1>SkyCast</h1>
+        <form action="/weather_details" method="get">
+            <input type="text" id="cityInput" name="city" list="suggestions" placeholder="City" autocomplete="off" required>
+            <datalist id="suggestions"></datalist>
+
+            <input type="text" id="stateInput" name="state" placeholder="State/Region">
+            <input type="text" id="countryInput" name="country" placeholder="Country">
+            
+            <select name="unit">
+                <option value="metric">Celsius (°C)</option>
+                <option value="imperial">Fahrenheit (°F)</option>
+            </select>
+            <button type="submit">Analyze Conditions</button>
+        </form>
     </div>
+
+    <script>
+        const cityInput = document.getElementById('cityInput');
+        const suggestions = document.getElementById('suggestions');
+        const stateInput = document.getElementById('stateInput');
+        const countryInput = document.getElementById('countryInput');
+
+        // Fetch suggestions as you type
+        cityInput.addEventListener('input', async (e) => {
+            const val = e.target.value;
+            
+            // If the user selects a full string from the dropdown, parse it
+            if (val.includes(',')) {
+                const parts = val.split(',');
+                if (parts.length >= 3) {
+                    cityInput.value = parts[0].trim();
+                    stateInput.value = parts[1].trim();
+                    countryInput.value = parts[2].trim();
+                    return; // Stop searching once we've picked one
+                }
+            }
+
+            if (val.length < 2) return;
+
+            try {
+                const res = await fetch(`/search_suggest?q=${val}`);
+                const data = await res.json();
+                
+                suggestions.innerHTML = '';
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    // Label shows the user the options, Value fills the boxes
+                    option.value = `${item.name}, ${item.region}, ${item.country}`;
+                    suggestions.appendChild(option);
+                });
+            } catch (err) {
+                console.error("Search fetch failed");
+            }
+        });
+    </script>
 </body>
 </html>
