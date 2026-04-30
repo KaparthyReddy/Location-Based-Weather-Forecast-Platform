@@ -41,4 +41,4 @@ def weather_details():
     return render_template('weather_details.html', weather_info=weather_info)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8081)
